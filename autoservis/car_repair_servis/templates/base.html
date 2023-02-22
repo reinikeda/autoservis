@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang=en>
+    {% load static i18n %}
+    <head>
+        <meta charset='UTF-8'>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>{% block title  %}Flywheel Autoservis{% endblock title %}</title>
+        <link rel='stylesheet' href="{% static 'admin/css/fonts.css' %}">
+        <link rel='stylesheet' href="{% static 'car_repair_servis/css/style.css' %}">
+    </head>
+    <body>
+        <header>
+            <h1 class='base_h1'>FLYWHEEL AUTOSERVIS</h1>
+            {% comment %} <img class='main_img' src='https://upload.wikimedia.org/wikipedia/commons/thumb/1/19/Auto_Repair_shop.jpg/640px-Auto_Repair_shop.jpg'> {% endcomment %}
+        </header>
+        <main>{% block content %}{% endblock content %}</main>
+        <footer>&copy; 2023 Flywheel Autoservis</footer>
+    </body>
+</html>

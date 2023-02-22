@@ -1,0 +1,43 @@
+body {
+    background-color: #142525;
+    color: #f4f5f5;
+}
+h1 {
+    text-align: center;
+}
+header {
+    background-image: url("https://upload.wikimedia.org/wikipedia/commons/thumb/1/19/Auto_Repair_shop.jpg/640px-Auto_Repair_shop.jpg");
+    width: 600px;
+    border-radius: 10px;
+    height: 200px;
+    margin: auto;
+}
+footer {
+    text-align: center;
+}
+.main_img {
+    border-radius: 10px;
+}
+.div_box {
+    border: 1px solid #020d0d;
+    background-color: #051b1b;
+    border-radius: 10px;
+    padding: 10px;
+    width: 100%;
+    max-width: 300px;
+}
+.main_flex {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    gap: 20px;
+    padding: 20px;
+    
+}
+.base_h1 {
+    text-align: center;
+    color: #f4f5f5;
+    background-color: #00000099;
+}

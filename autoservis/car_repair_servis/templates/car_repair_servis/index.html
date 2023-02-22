@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% block title %}Welcome to {{ block.super }}{% endblock title %}
+{% block content %}
+<h1>Welcome to our autoservis!</h1>
+<div class='main_flex'>
+    <div class='div_box'>
+        <p>We offer {{ service_count }} services:</p>
+        {% for service in service_list %}
+        <ul>
+            <li>{{ service.name }}</li>
+        </ul>
+        {% endfor %}
+    </div>
+    <div class='div_box'>
+        <p>{{ client_count }} clients already trusted us!</p>
+    </div>
+    <div class='div_box'>
+        <p>Total orders received: {{ order_count }}</p>
+    </div>
+</div>
+{% endblock content %}

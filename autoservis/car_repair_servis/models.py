@@ -45,7 +45,7 @@ class Service(models.Model):
     price = models.DecimalField(_('service price'), null=False, blank=False, max_digits=10, decimal_places=2)
 
     def __str__(self) -> str:
-        return f'{self.name}'
+        return f'{self.name}: {self.price} €'
 
     class Meta:
         ordering = ['name']
