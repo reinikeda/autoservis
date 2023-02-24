@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% block title %}{{ block.super }}{% endblock title %}
+{% block content %}
+<h1>Client list</h1>
+{% if object_list.count > 0 %}
+<ul>
+    {% for client in object_list %}
+        <li><a href="{% url 'client' client.pk %}">{{ client.client }}</a></li>
+    {% endfor %}
+</ul>
+{% else %}
+    <p>There are no clients in our database</p>
+{% endif %}
+{% endblock content %}

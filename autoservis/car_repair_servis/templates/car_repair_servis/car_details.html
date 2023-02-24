@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}{{ block.super }}{% endblock title %}
+{% block style %}
+ul li { display: flex; flex-direction: row; flex-wrap: wrap; justify-content: flex_start; gap: 2rem; }
+ul img { width: 400px; }
+ul hr { margin: 0; border: 2px solid #020d0d; border-radius: 10px; }
+ul .li_padding { padding-top: 1rem; }
+ul .car_image { border: 1px solid #020d0d; border-radius: 10px; }
+ul li div { height: 100%; text-align: left; }
+ul li p { margin: 0; padding-bottom: 6px; }
+ul li h4 { margin: 0; padding-bottom: 6px; }
+{% endblock style %}
+{% block content %}
+<h1>Car details</h1>
+<h2>{{ object.car_model.brand }} {{ object.car_model.model }}</h2>
+<ul>
+    <li>
+        <div>
+            {% if object.car_image %}
+            <img class="car_image" src="{{ object.car_image.url }}">
+            {% else %}
+                <img src="{% static 'car_repair_servis/img/default_car_small.png' %}">
+            {% endif %}
+        </div>
+        <div>
+            <p>Owner: {{ object.client }}</p>
+            <p>Plate number: {{ object.plate_number }}</p>
+            <p>Vin number: {{ object.vin_number }}</p>
+            <p>Year of production: {{ object.car_model.year }}</p>
+            <p>Engine type: {{ object.car_model.get_engine_display }}</p>
+        </div>
+    </li>
+    {% if object.orders.count > 0 %}
+    <hr>
+    <li class="li_padding">
+        {% for order in object.orders.all %}
+        <div>
+            <h4>Order detail:</h4>
+            <p>Submission date: {{ order.date_start }}</p>
+            <p>Status: {{ order.get_status_display }}</p>
+            {% comment %} {% if object.orders.order_lines.count > 0 %}
+            {% for service in object.orders.order_lines.all %}
+            <p>Services: {{ service }}</p>
+            {% endfor %}
+            {% endif %} {% endcomment %}
+            <p>Planned completion date: {{ order.date_finish }}</p>
+            <p>Total price: {{ order.total_order_sum }}</p>
+        </div>
+        {% endfor %}</p>
+    </li>
+    <hr>
+    {% endif %}
+</ul>
+{% endblock content %}

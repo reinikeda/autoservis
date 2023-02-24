@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% block title %}{{ block.super }}{% endblock title %}
+{% block content %}
+<h1>Orders</h1>
+{% if order_list.count > 0 %}
+<ul>
+    {% for order in order_list %}
+        <li><a href="{% url 'order' order.pk %}">{{ order.date_start }} - {{ order.car.car_model.brand }} {{ order.car.car_model.model }}</a></li>
+    {% endfor %}
+</ul>
+{% else %}
+    <p>There are no orders in our database</p>
+{% endif %}
+{% endblock content %}

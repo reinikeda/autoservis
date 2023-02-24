@@ -6,17 +6,22 @@
 <div class='main_flex'>
     <div class='div_box'>
         <p>We offer {{ service_count }} services:</p>
-        {% for service in service_list %}
         <ul>
+            {% for service in service_list %}
             <li>{{ service.name }}</li>
+            {% endfor %}
         </ul>
-        {% endfor %}
     </div>
     <div class='div_box'>
         <p>{{ client_count }} clients already trusted us!</p>
+        {% comment %} <p>Most popular car model: {{ model_popular.brand }} {{ model_popular.model }}</p> {% endcomment %}
     </div>
     <div class='div_box'>
-        <p>Total orders received: {{ order_count }}</p>
+        <ul>
+            <li>Total orders received: {{ order_count }}</li>
+            <li>Orders in progress: {{ order_progress }}</li>
+            <li>Orders finished: {{ order_done }}</li>
+        </ul>
     </div>
 </div>
 {% endblock content %}

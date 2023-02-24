@@ -1,19 +1,33 @@
+html {
+    font-family: 'Roboto', sans-serif;
+    font-size: 16px;
+}
 body {
     background-color: #142525;
     color: #f4f5f5;
 }
-h1 {
-    text-align: center;
+.base_menu a {
+    font-size: 120%;
+    font-weight: 600;
+    text-decoration: none;
 }
-header {
-    background-image: url("https://upload.wikimedia.org/wikipedia/commons/thumb/1/19/Auto_Repair_shop.jpg/640px-Auto_Repair_shop.jpg");
-    width: 600px;
-    border-radius: 10px;
-    height: 200px;
-    margin: auto;
+a:link {
+    color: #bceaea;
+}
+a:visited {
+    color: #b1d9d9;
+}
+a:hover {
+    color: #84e3e3;
+}
+h1, h2, h3 {
+    text-align: center;
 }
 footer {
     text-align: center;
+}
+li:not(:last-child) {
+    padding-bottom: 10px;
 }
 .main_img {
     border-radius: 10px;
@@ -36,8 +50,28 @@ footer {
     padding: 20px;
     
 }
+.base_header {
+    background-image: url("https://upload.wikimedia.org/wikipedia/commons/thumb/1/19/Auto_Repair_shop.jpg/640px-Auto_Repair_shop.jpg");
+    width: 600px;
+    border-radius: 10px;
+    height: 200px;
+    margin: auto;
+}
 .base_h1 {
     text-align: center;
     color: #f4f5f5;
     background-color: #00000099;
+    border-radius: 10px;
+}
+header ul {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 10px;
+}
+header ul li {
+    display: block;
+}
+.base_menu {
+    color: #f4f5f5;
 }

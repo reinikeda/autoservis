@@ -33,6 +33,7 @@ class Car(models.Model):
     plate_number = models.CharField(_('plate number'), max_length=10)
     vin_number = models.CharField(_('VIN number'), max_length=17, help_text='VIN code must be 17 symbols long')
     client = models.CharField(_('client name'), max_length=50)
+    car_image = models.ImageField(_('car image'), upload_to='car_repair_servis/cars/', null=True, blank=True)
 
     def __str__(self) -> str:
         return f'{self.car_model} {self.plate_number} {self.client}'

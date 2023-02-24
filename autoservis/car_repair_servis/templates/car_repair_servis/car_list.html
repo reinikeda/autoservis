@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}{{ block.super }}{% endblock title %}
+{% block style %}
+ul.car_list { display: flex; flex-direction: row; flex-wrap: wrap; justify-content: space-between; gap: 1rem; }
+ul.car_list li { display: flex; flex-direction: column; width: 300px; }
+ul.car_list img { width: 200px; }
+ul.car_list .car_image { border: 1px solid #020d0d; border-radius: 10px; }
+ul li div { text-align: center; }
+{% endblock style %}
+{% block content %}
+<h1>Car list</h1>
+{% include 'car_repair_servis/includes/search.html' %}
+{% if car_list.count > 0 %}
+{% include 'car_repair_servis/includes/paginator_next.html' %}
+<ul class="car_list">
+    {% for car in car_list %}
+        <li>
+            <a href="{% url 'car' car.pk %}"><h2>{{ car.car_model.brand }} {{ car.car_model.model }}</h2></a>
+            <div>
+                {% if car.car_image %}
+                <img class="car_image" src="{{ car.car_image.url }}">
+                {% else %}
+                    <img src="{% static 'car_repair_servis/img/default_car_small.png' %}">
+                {% endif %}
+            </div>
+        </li>
+    {% endfor %}
+</ul>
+{% include 'car_repair_servis/includes/paginator_number.html' %}
+{% else %}
+    <p>There are no cars in our database...</p>
+{% endif %}
+{% endblock content %}
