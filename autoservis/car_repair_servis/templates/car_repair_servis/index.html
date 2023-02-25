@@ -12,16 +12,19 @@
             {% endfor %}
         </ul>
     </div>
-    <div class='div_box'>
+    <div class="div_box">
         <p>{{ client_count }} clients already trusted us!</p>
         {% comment %} <p>Most popular car model: {{ model_popular.brand }} {{ model_popular.model }}</p> {% endcomment %}
     </div>
-    <div class='div_box'>
+    <div class="div_box">
+        <p>Before buying a new car, always check it in an autoservis!</p>
+        <iframe width="100%" height="100%" src="https://www.youtube.com/embed/qG4IaHgqH00" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+    </div>
+    <div class="div_box">
         <ul>
             <li>Total orders received: {{ order_count }}</li>
             <li>Orders in progress: {{ order_progress }}</li>
             <li>Orders finished: {{ order_done }}</li>
         </ul>
     </div>
-</div>
 {% endblock content %}

@@ -2,23 +2,11 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 
 class CarModel(models.Model):
-    brand = models.CharField(_('brand'), max_length=50)
-    model = models.CharField(_('model'), max_length=50)
-    year = models.IntegerField(_('year'))
-
-    ENGINE = (
-        ('u', _('unknown')),
-        ('d', _('diesel')),
-        ('p', _('petrol')),
-        ('g', _('petrol and gas')),
-        ('e', _('electric')),
-        ('h', _('hybrid')),
-    )
-
-    engine = models.CharField(_('engine'), max_length=1, choices=ENGINE, default='u')
+    brand = models.CharField(_('brand'), max_length=50, null=False, blank=False)
+    model = models.CharField(_('model'), max_length=50, null=False, blank=False)
 
     def __str__(self) -> str:
-        return f'{self.brand} {self.model} ({self.year}, {self.engine})'
+        return f'{self.brand} {self.model}'
 
     class Meta:
         ordering = ['brand', 'model']
@@ -30,9 +18,22 @@ class Car(models.Model):
         related_name='cars',
         verbose_name=_('car model')
     )
-    plate_number = models.CharField(_('plate number'), max_length=10)
-    vin_number = models.CharField(_('VIN number'), max_length=17, help_text='VIN code must be 17 symbols long')
-    client = models.CharField(_('client name'), max_length=50)
+    year = models.IntegerField(_('year'), null=True, blank=True)
+
+    ENGINE = (
+        ('u', _('unknown')),
+        ('d', _('diesel')),
+        ('p', _('petrol')),
+        ('g', _('petrol and gas')),
+        ('e', _('electric')),
+        ('h', _('hybrid')),
+    )
+
+    engine = models.CharField(_('engine'), max_length=1, choices=ENGINE, default='u')
+    color = models.CharField(_('color'), max_length=50, null=True, blank=True)
+    plate_number = models.CharField(_('plate number'), max_length=10, null=False, blank=False)
+    vin_number = models.CharField(_('VIN number'), max_length=17, help_text='VIN code must be 17 symbols long', null=True, blank=True)
+    client = models.CharField(_('client name'), max_length=50, null=False, blank=False)
     car_image = models.ImageField(_('car image'), upload_to='car_repair_servis/cars/', null=True, blank=True)
 
     def __str__(self) -> str:
@@ -42,7 +43,7 @@ class Car(models.Model):
         ordering = ['client', 'car_model']
 
 class Service(models.Model):
-    name = models.CharField(_('service name'), max_length=50)
+    name = models.CharField(_('service name'), max_length=50, null=False, blank=False)
     price = models.DecimalField(_('service price'), null=False, blank=False, max_digits=10, decimal_places=2)
 
     def __str__(self) -> str:
@@ -78,7 +79,6 @@ class Order(models.Model):
         for line in self.order_lines.all():
             total += line.total_price
         return total
-
 
     def __str__(self) -> str:
         return f'{self.date_start} {self.car}'

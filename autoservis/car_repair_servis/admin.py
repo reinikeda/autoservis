@@ -4,29 +4,27 @@ from . import models
 
 
 class CarModelsAdmin(admin.ModelAdmin):
-    list_display = ('brand', 'model', 'year', 'engine')
+    list_display = ('brand', 'model', )
     list_display_links = ('model', )
-    list_filter = ('engine', 'year', )
-    search_fields = ('brand', 'model')
-    list_editable = ('engine', )
+    search_fields = ('brand', 'model', )
 
 class CarAdmin(admin.ModelAdmin):
-    list_display = ('car_model', 'plate_number', 'vin_number', 'client')
-    list_filter = ('client', )
-    list_editable = ('client', )
+    list_display = ('car_model', 'year', 'engine', 'color', 'plate_number', 'vin_number', 'client', )
+    list_filter = ('client', 'engine', )
+    list_editable = ('engine', 'color', 'client', )
 
 class ServiceAdmin(admin.ModelAdmin):
-    list_display = ('name', 'price')
+    list_display = ('name', 'price', )
     search_fields = ('name', )
     list_editable = ('price', )
 
 class OrderAdmin(admin.ModelAdmin):
-    list_display = ('car', 'date_start', 'status', 'date_finish', 'total_order_sum')
+    list_display = ('car', 'date_start', 'status', 'date_finish', 'total_order_sum', )
     list_filter = ('status', )
-    list_editable = ('status', 'date_finish')
+    list_editable = ('status', 'date_finish', )
 
 class OrderLineAdmin(admin.ModelAdmin):
-    list_display = ('service_name', 'order', 'quantity', 'total_price')
+    list_display = ('service_name', 'order', 'quantity', 'total_price', )
     list_display_links = ('order', )
     list_filter = ('service', )
     list_editable = ('quantity', )
