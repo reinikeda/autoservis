@@ -3,6 +3,9 @@
 {% block title %}{{ block.super }}{% endblock title %}
 {% block style %}
 table { width: 100%; text-align: center; padding: 20px; }
+th { padding-bottom: 10px; }
+td { vertical-align: top; }
+td p { margin: 0; }
 .total_price { font-weight: bold; }
 {% endblock style %}
 {% block content %}
@@ -15,7 +18,7 @@ table { width: 100%; text-align: center; padding: 20px; }
             <th>Planned completion date</th>
             <th>Status</th>
             {% if object.order_lines.count > 0 %}
-            <th colspan="2">Services</th>
+            <th>Services</th>
             {% endif %}
             <th class="total_price">Total price</th>
         </tr>
@@ -24,9 +27,10 @@ table { width: 100%; text-align: center; padding: 20px; }
             <td>{{ object.date_finish }}</td>
             <td>{{ object.get_status_display }}</td>
             {% if object.order_lines.count > 0 %}
-            {% for service in object.order_lines.all %}
-            <td>{{ service.service }} (quantity: {{ service.quantity }})</td>
+            <td>{% for service in object.order_lines.all %}
+            <p>{{ service.service }} (quantity: {{ service.quantity }})</p>
             {% endfor %}
+            </td>
             {% endif %}
             <td class="total_price">{{ object.total_order_sum }}</td>
         </tr>
