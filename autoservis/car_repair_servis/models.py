@@ -1,5 +1,10 @@
+from datetime import date
+from django.contrib.auth import get_user_model
 from django.db import models
+from tinymce.models import HTMLField
 from django.utils.translation import gettext_lazy as _
+
+User = get_user_model()
 
 class CarModel(models.Model):
     brand = models.CharField(_('brand'), max_length=50, null=False, blank=False)
@@ -34,10 +39,19 @@ class Car(models.Model):
     plate_number = models.CharField(_('plate number'), max_length=10, null=False, blank=False)
     vin_number = models.CharField(_('VIN number'), max_length=17, help_text='VIN code must be 17 symbols long', null=True, blank=True)
     client = models.CharField(_('client name'), max_length=50, null=False, blank=False)
+    customer = models.ForeignKey(
+        User,
+        verbose_name=_('customer'),
+        on_delete=models.SET_NULL,
+        related_name='cars',
+        null=True, blank=True
+    )
+
     car_image = models.ImageField(_('car image'), upload_to='car_repair_servis/cars/', null=True, blank=True)
+    description = HTMLField(_('car description'), max_length=5000, null=True, blank=True)
 
     def __str__(self) -> str:
-        return f'{self.car_model} {self.plate_number} {self.client}'
+        return f'{self.car_model} {self.plate_number} {self.customer}'
 
     class Meta:
         ordering = ['client', 'car_model']
@@ -79,6 +93,12 @@ class Order(models.Model):
         for line in self.order_lines.all():
             total += line.total_price
         return total
+
+    @property
+    def is_overdue(self):
+        if self.date_finish:
+            return self.date_finish < date.today()
+        return False
 
     def __str__(self) -> str:
         return f'{self.date_start} {self.car}'

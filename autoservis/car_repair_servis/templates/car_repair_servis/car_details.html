@@ -10,6 +10,7 @@ ul .car_image { border: 2px solid #020d0d; border-radius: 10px; }
 ul li div { height: 100%; text-align: left; }
 ul li p { margin: 0; padding-bottom: 6px; }
 ul li h4 { margin: 0; padding-bottom: 6px; }
+.overdue { color: red; }
 {% endblock style %}
 {% block content %}
 <h1>Car details</h1>
@@ -31,6 +32,9 @@ ul li h4 { margin: 0; padding-bottom: 6px; }
             <p>Engine type: {{ object.get_engine_display }}</p>
             <p>Color: {{ object.color }}</p>
         </div>
+        <div>
+            {{ object.description|safe }}
+        </div>
     </li>
     {% if object.orders.count > 0 %}
     <hr>
@@ -39,7 +43,12 @@ ul li h4 { margin: 0; padding-bottom: 6px; }
         <div>
             <h4>Order detail:</h4>
             <p>Submission date: {{ order.date_start }}</p>
+            {% if order.is_overdue == False %}
             <p>Planned completion date: {{ order.date_finish }}</p>
+            {% else %}
+            <p>Planned completion date: {{ order.date_finish }}</p>
+            <p class = "overdue">Order is late!</p>
+            {% endif %}
             <p>Status: {{ order.get_status_display }}</p>
             {% comment %} {% if object.orders.count > 0 %}
             <p>Services:</p>

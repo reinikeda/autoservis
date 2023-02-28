@@ -1,4 +1,5 @@
-from django.shortcuts import render
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.shortcuts import render, get_object_or_404
 from django.views import generic
 from django.db.models import Q
 from . import models
@@ -11,6 +12,7 @@ def index(request):
     order_progress = models.Order.objects.filter(status='w').count()
     order_done = models.Order.objects.filter(status='d').count()
     model_popular = models.CarModel.objects.all()
+    request.session['visit_count'] = request.session.get('visit_count', 0) + 1
     return render(request, 'car_repair_servis/index.html', {
         'service_count': service_count,
         'service_list': service_list,
@@ -29,6 +31,9 @@ class CarListView(generic.ListView):
 
     def get_queryset(self):
         qs = super().get_queryset()
+        brand_id = self.request.GET.get('brand_id')
+        if brand_id:
+            qs = qs.filter(car_model=brand_id)
         query = self.request.GET.get('search')
         if query:
             qs = qs.filter(
@@ -36,6 +41,16 @@ class CarListView(generic.ListView):
                 Q(car_model__model__icontains=query)
             )
         return qs
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        brands = models.CarModel.objects.all()
+        context.update({'brands': brands})
+        brand_id = self.request.GET.get('brand_id')
+        if brand_id:
+            brand = get_object_or_404(models.CarModel, id=brand_id)
+            context.update({'current_brand': brand})
+        return context
 
 class CarDetailView(generic.DetailView):
     model = models.Car
@@ -49,10 +64,11 @@ class OrderDetailView(generic.DetailView):
     model = models.Order
     template_name = 'car_repair_servis/order_detail.html'
 
-class ClientListView(generic.ListView):
+class UserCarListView(LoginRequiredMixin, generic.ListView):
     model = models.Car
-    template_name = 'car_repair_servis/client_list.html'
+    template_name = 'car_repair_servis/user_car_list.html'
 
-class ClientDetailView(generic.DetailView):
-    model = models.Car
-    template_name = 'car_repair_servis/client_detail.html'
+    def get_queryset(self):
+        qs = super().get_queryset()
+        qs = qs.filter(customer=self.request.user)
+        return qs

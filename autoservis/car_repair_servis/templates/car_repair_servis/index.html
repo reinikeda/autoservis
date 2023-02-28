@@ -27,4 +27,7 @@
             <li>Orders finished: {{ order_done }}</li>
         </ul>
     </div>
+    <div class="div_box">
+        <p>Your visits count: {{ request.session.visit_count }}</p>
+    </div>
 {% endblock content %}

@@ -9,9 +9,14 @@ class CarModelsAdmin(admin.ModelAdmin):
     search_fields = ('brand', 'model', )
 
 class CarAdmin(admin.ModelAdmin):
-    list_display = ('car_model', 'year', 'engine', 'color', 'plate_number', 'vin_number', 'client', )
+    list_display = ('car_model', 'year', 'engine', 'color', 'plate_number', 'vin_number', 'client', 'customer', )
     list_filter = ('client', 'engine', )
-    list_editable = ('engine', 'color', 'client', )
+    search_fields = ('customer__last_name', )
+    list_editable = ('engine', 'color', )
+    fieldsets = (
+        (_('General'), {'fields': ('car_model', 'year', 'engine', 'color')}),
+        (_('Registration'), {'fields': ('client', 'customer', 'plate_number', 'vin_number')})
+    )
 
 class ServiceAdmin(admin.ModelAdmin):
     list_display = ('name', 'price', )
@@ -19,7 +24,7 @@ class ServiceAdmin(admin.ModelAdmin):
     list_editable = ('price', )
 
 class OrderAdmin(admin.ModelAdmin):
-    list_display = ('car', 'date_start', 'status', 'date_finish', 'total_order_sum', )
+    list_display = ('car', 'date_start', 'status', 'is_overdue', 'date_finish', 'total_order_sum', )
     list_filter = ('status', )
     list_editable = ('status', 'date_finish', )
 

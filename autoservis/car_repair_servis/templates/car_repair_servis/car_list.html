@@ -7,6 +7,10 @@ ul.car_list li { display: flex; flex-direction: column; width: 300px; }
 ul.car_list img { width: 200px; }
 ul.car_list .car_image { border: 1px solid #020d0d; border-radius: 10px; }
 ul li div { text-align: center; }
+hr { margin: 0; border: 1px solid #020d0d; border-radius: 10px; }
+.active { font-weight: bold; }
+.filter { display: flex; flex-direction: row; flex-wrap: wrap; justify-content: space-between; gap: 1rem; }
+.filter li { display: inline-block; }
 {% endblock style %}
 {% block content %}
 <h1>Car list</h1>
@@ -31,4 +35,5 @@ ul li div { text-align: center; }
 {% else %}
     <p>There are no cars in our database...</p>
 {% endif %}
+</ul>
 {% endblock content %}
