@@ -41,6 +41,7 @@ class OrderLineAdmin(admin.ModelAdmin):
 class OrderReviewAdmin(admin.ModelAdmin):
     list_display = ('created_at', 'order', 'reviewer', 'content', )
     list_display_links = ('created_at', )
+    list_filter = ('order', )
     search_fields = ('reviewer__last_name', 'order__car')
 
 admin.site.register(models.CarModel, CarModelsAdmin)

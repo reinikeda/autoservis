@@ -85,7 +85,7 @@ class CarDetailView(generic.edit.FormMixin, generic.DetailView):
         form.order = self.object
         form.reviewer = self.request.user
         form.save()
-        messages.success(self.request, 'Review posted successfully')
+        messages.success(self.request, '-- Review posted successfully --')
         return super().form_valid(form)
 
 
@@ -119,7 +119,7 @@ class OrderDetailView(generic.edit.FormMixin, generic.DetailView):
         form.order = self.object
         form.reviewer = self.request.user
         form.save()
-        messages.success(self.request, 'Review posted successfully')
+        messages.success(self.request, '-- Review posted successfully --')
         return super().form_valid(form)
 
 class UserCarListView(LoginRequiredMixin, generic.ListView):
