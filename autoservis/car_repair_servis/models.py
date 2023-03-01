@@ -128,3 +128,26 @@ class OrderLine(models.Model):
 
     def __str__(self) -> str:
         return f'{self.order} {self.service}: {self.total_price} €'
+    
+class OrderReview(models.Model):
+    order = models.ForeignKey(
+        Order,
+        verbose_name=_('order'),
+        on_delete=models.CASCADE,
+        related_name='reviews',
+    )
+    reviewer = models.ForeignKey(
+        User,
+        verbose_name=_('reviewer'),
+        on_delete=models.SET_NULL,
+        related_name='order_reviews',
+        null=True, blank=True,
+    )
+    created_at = models.DateTimeField(_('created at'), auto_now_add=True, db_index=True)
+    content = models.TextField(_('content'), max_length=4000)
+
+    def __str__(self) -> str:
+        return f'{self.reviewer} - {self.created_at}'
+    
+    class Meta:
+        ordering = ['-created_at']

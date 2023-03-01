@@ -36,4 +36,28 @@ td p { margin: 0; }
         </tr>
     </table>
 </div>
+<div>
+    <hr>
+    <li>
+        <h2>Comment</h2>
+        <form method="post" action="{{ request.path }}">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">post review</button>
+        </form>
+        {% if object.reviews %}
+        <ul>
+            {% for review in object.reviews.all %}
+            <li>
+                <h4>{{ review.reviewer }} {{ review.created_at }}</h4>
+                <p>{{ review.content }}</p>
+            </li>
+            {% endfor %}
+        </ul>
+        {% else %}
+        <h3>No reviews for this car yet.</h3>
+        {% endif %}
+    </li>
+</div>
+
 {% endblock content %}

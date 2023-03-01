@@ -5,12 +5,14 @@
 ul li { display: flex; flex-direction: row; flex-wrap: wrap; justify-content: flex_start; gap: 2rem; }
 ul img { width: 400px; }
 ul hr { margin: 0; border: 1px solid #020d0d; border-radius: 10px; }
-ul .li_padding { padding-top: 1rem; }
 ul .car_image { border: 2px solid #020d0d; border-radius: 10px; }
 ul li div { height: 100%; text-align: left; }
 ul li p { margin: 0; padding-bottom: 6px; }
-ul li h4 { margin: 0; padding-bottom: 6px; }
+ul li h3 { margin: 0; padding-bottom: 6px; }
 .overdue { color: red; }
+.bold { font-weight: bold; }
+#padding { padding-left: 10px; }
+.order_details { display: flex; flex-direction: row; flex-wrap: wrap; justify-content: flex_start; gap: 10rem; padding-top: 1rem; }
 {% endblock style %}
 {% block content %}
 <h1>Car details</h1>
@@ -38,10 +40,10 @@ ul li h4 { margin: 0; padding-bottom: 6px; }
     </li>
     {% if object.orders.count > 0 %}
     <hr>
-    <li class="li_padding">
-        {% for order in object.orders.all %}
+    {% for order in object.orders.all %}
+    <li class="order_details">
         <div>
-            <h4>Order detail:</h4>
+            <h3>Order detail:</h3>
             <p>Submission date: {{ order.date_start }}</p>
             {% if order.is_overdue == False %}
             <p>Planned completion date: {{ order.date_finish }}</p>
@@ -50,17 +52,42 @@ ul li h4 { margin: 0; padding-bottom: 6px; }
             <p class = "overdue">Order is late!</p>
             {% endif %}
             <p>Status: {{ order.get_status_display }}</p>
-            {% comment %} {% if object.orders.count > 0 %}
+            {% if order.order_lines.count > 0 %}
             <p>Services:</p>
-            {% for service in object.orders.all %}
-            <p>{{ service }}</p>
+            {% for service in order.order_lines.all %}
+            <p id="padding">{{ service.service }}</p>
             {% endfor %}
-            {% endif %} {% endcomment %}
-            <p>Total price: {{ order.total_order_sum }}</p>
+            {% endif %}
+            <p class="bold">Total price: {{ order.total_order_sum }}</p>
         </div>
-        {% endfor %}</p>
+        <div>
+            <h3>Comment:</h3>
+            <form method="post" action="{{ request.path }}">
+                {% csrf_token %}
+                <p>{{ form.reviewer }} {{ form.content }} {{ form.content.errors }}</p>
+                <input type="hidden" name="order" value="{{ order.id }}">
+                <button type="submit">post review</button>
+            </form>
+        </div>
+        <div>
+            {% if order.reviews %}
+            <ul>
+                {% for review in order.reviews.all %}
+                <li>
+                    <p>{{ review.content }}</p>
+                </li>
+                <li>
+                    <p>{{ review.reviewer }} {{ review.created_at }}</p>
+                </li>
+                {% endfor %}
+            </ul>
+            {% else %}
+            <h3>No reviews for this car yet.</h3>
+            {% endif %}
+            </div>
     </li>
     <hr>
+    {% endfor %}</p>
     {% endif %}
 </ul>
 {% endblock content %}

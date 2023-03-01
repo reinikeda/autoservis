@@ -38,8 +38,14 @@ class OrderLineAdmin(admin.ModelAdmin):
     def service_name(self, obj):
         return obj.service.name
 
+class OrderReviewAdmin(admin.ModelAdmin):
+    list_display = ('created_at', 'order', 'reviewer', 'content', )
+    list_display_links = ('created_at', )
+    search_fields = ('reviewer__last_name', 'order__car')
+
 admin.site.register(models.CarModel, CarModelsAdmin)
 admin.site.register(models.Car, CarAdmin)
 admin.site.register(models.Service, ServiceAdmin)
 admin.site.register(models.Order, OrderAdmin)
 admin.site.register(models.OrderLine, OrderLineAdmin)
+admin.site.register(models.OrderReview, OrderReviewAdmin)

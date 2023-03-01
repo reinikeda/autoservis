@@ -1,7 +1,10 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib import messages
 from django.shortcuts import render, get_object_or_404
 from django.views import generic
 from django.db.models import Q
+from django.urls import reverse
+from . forms import OrderReviewForm
 from . import models
 
 def index(request):
@@ -52,17 +55,72 @@ class CarListView(generic.ListView):
             context.update({'current_brand': brand})
         return context
 
-class CarDetailView(generic.DetailView):
+# class CarDetailView(generic.DetailView):
+#     model = models.Car
+#     template_name = 'car_repair_servis/car_details.html'
+
+class CarDetailView(generic.edit.FormMixin, generic.DetailView):
     model = models.Car
     template_name = 'car_repair_servis/car_details.html'
+    form_class = OrderReviewForm
+
+    def get_success_url(self) -> str:
+        return reverse('car', kwargs={'pk': self.get_object().id})
+
+    def post(self, *args, **kwargs):
+        self.object = self.get_object()
+        form = self.get_form()
+        if form.is_valid():
+            return self.form_valid(form)
+        else:
+            return self.form_invalid(form)
+
+    def get_initial(self):
+        initial = super().get_initial()
+        # initial['order'] = self.get_object()
+        initial['reviewer'] = self.request.user
+        return initial
+    
+    def form_valid(self, form):
+        form.order = self.object
+        form.reviewer = self.request.user
+        form.save()
+        messages.success(self.request, 'Review posted successfully')
+        return super().form_valid(form)
+
 
 class OrderListView(generic.ListView):
     model = models.Order
     template_name = 'car_repair_servis/order_list.html'
 
-class OrderDetailView(generic.DetailView):
+class OrderDetailView(generic.edit.FormMixin, generic.DetailView):
     model = models.Order
     template_name = 'car_repair_servis/order_detail.html'
+    form_class = OrderReviewForm
+
+    def get_success_url(self) -> str:
+        return reverse('order', kwargs={'pk': self.get_object().id})
+
+    def post(self, *args, **kwargs):
+        self.object = self.get_object()
+        form = self.get_form()
+        if form.is_valid():
+            return self.form_valid(form)
+        else:
+            return self.form_invalid(form)
+
+    def get_initial(self):
+        initial = super().get_initial()
+        initial['order'] = self.get_object()
+        initial['reviewer'] = self.request.user
+        return initial
+    
+    def form_valid(self, form):
+        form.order = self.object
+        form.reviewer = self.request.user
+        form.save()
+        messages.success(self.request, 'Review posted successfully')
+        return super().form_valid(form)
 
 class UserCarListView(LoginRequiredMixin, generic.ListView):
     model = models.Car
@@ -72,3 +130,4 @@ class UserCarListView(LoginRequiredMixin, generic.ListView):
         qs = super().get_queryset()
         qs = qs.filter(customer=self.request.user)
         return qs
+    
