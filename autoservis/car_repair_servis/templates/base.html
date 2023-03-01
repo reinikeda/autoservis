@@ -21,7 +21,7 @@
                     <li><a href="{% url 'cars' %}">Car list</a></li>
                     <li><a href="{% url 'orders' %}">Order list</a></li>
                     {% if request.user.is_authenticated %}
-                        <span>{{ request.user }}</span>
+                    <li class="user-info"><a href="{% url 'profile_detail_active' %}">{{ request.user }}</a></li>
                         <li><a href="{% url 'user_cars' %}">My cars</a></li>
                         {% if request.user.is_superuser or request.user.is_staff %}
                             <li><a href="{% url 'admin:index' %}">Admin</a></li>

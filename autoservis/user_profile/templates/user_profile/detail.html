@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% block title %}{{ object.user }} profile at {{ block.super }}{% endblock title %}
+{% block style %}
+ul li { display: flex; flex-direction: row; flex-wrap: wrap; justify-content: flex_start; gap: 2rem; }
+{% endblock style %}
+{% block content %}
+<h1>User details</h1>
+<ul>
+    <li>
+        <div>
+            <img src="{{ object.photo.url }}" class="user-profile-img">
+        </div>
+        <div>
+            {% if object.user.first_name or object.user.last_name %}
+                <h4>{{ object.user.first_name }} {{ object.user.last_name }}</h4>
+            {% endif %}
+            {% if object.user == request.user %}
+            <p>Username: {{ object.user }}</p>
+            <p>Email: {{ object.user.email }}</p>
+            <p><a href="{% url 'profile_update' %}">update your profile</a></p>
+        </div>
+    </li>
+</ul>
+{% endif %}
+{% endblock content %}

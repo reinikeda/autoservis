@@ -1,8 +1,10 @@
 from django.contrib import messages
 from django.contrib.auth import get_user_model
-from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
 from django.views.decorators.csrf import csrf_protect
+from . import forms, models
 
 
 User = get_user_model()
@@ -34,3 +36,32 @@ def register(request):
             messages.success(request, f'user {username} has been succesfully registered. You can log in now.')
             return redirect(reverse_lazy('login'))
     return render(request, 'user_profile/register.html')
+
+@login_required
+def detail_active(request):
+    return render(request, 'user_profile/detail.html', {
+        'object': request.user.profile
+    })
+
+# def detail(request, username):
+#     return render(request, 'user_profile/detail.html', {
+#         'object': get_object_or_404(models.Profile, user__username=username)
+#     })
+
+@login_required
+def update(request):
+    if request.method == "POST":
+        user_form = forms.UserUpdateForm(request.POST, instance=request.user)
+        profile_form = forms.ProfileUpdateForm(request.POST, request.FILES, instance=request.user.profile)
+        if user_form.is_valid() and profile_form.is_valid():
+            user_form.save()
+            profile_form.save()
+            messages.success(request, "Your profile was successfully updated.")
+            return redirect('profile_detail_active')
+    else:
+        user_form = forms.UserUpdateForm(instance=request.user)
+        profile_form = forms.ProfileUpdateForm(instance=request.user.profile)
+    return render(request, 'user_profile/update.html', {
+        'user_form': user_form,
+        'profile_form': profile_form,
+    })

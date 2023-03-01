@@ -13,6 +13,7 @@ ul li h3 { margin: 0; padding-bottom: 6px; }
 .bold { font-weight: bold; }
 #padding { padding-left: 10px; }
 #italic { font-style: italic; }
+#comment::before { content: '>>> '; }
 .order_details { display: flex; flex-direction: row; flex-wrap: wrap; justify-content: flex_start; gap: 10rem; padding-top: 1rem; }
 {% endblock style %}
 {% block content %}
@@ -28,12 +29,17 @@ ul li h3 { margin: 0; padding-bottom: 6px; }
             {% endif %}
         </div>
         <div>
+            {% if object.customer.first_name or object.customer.last_name %}
             <p>Owner: {{ object.customer.first_name }} {{ object.customer.last_name }}</p>
+            {% else %}
+            <p>Owner: {{ object.customer }}</p>
+            {% endif %}
             <p>Plate number: {{ object.plate_number }}</p>
             <p>Vin number: {{ object.vin_number }}</p>
             <p>Year of production: {{ object.year }}</p>
             <p>Engine type: {{ object.get_engine_display }}</p>
             <p>Color: {{ object.color }}</p>
+            {% comment %} <p><a href="{% url 'car_update' %}">update car information</a></p> {% endcomment %}
         </div>
         <div>
             {{ object.description|safe }}
@@ -75,10 +81,11 @@ ul li h3 { margin: 0; padding-bottom: 6px; }
             <ul>
                 {% for review in order.reviews.all %}
                 <li>
-                    <p>{{ review.content }}</p>
+                    <p id="comment">{{ review.content }}</p>
                 </li>
                 <li>
                     <p id="italic">{{ review.reviewer.first_name }} {{ review.reviewer.last_name }} - {{ review.created_at }}</p>
+                    {% comment %} <p id="italic"><a href="{% url 'profile_detail' review.reviewer.username %}">{{ review.reviewer.first_name }} {{ review.reviewer.last_name }}</a> - {{ review.created_at }}</p> {% endcomment %}
                 </li>
                 {% endfor %}
             </ul>
