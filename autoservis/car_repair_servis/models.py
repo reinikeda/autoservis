@@ -15,6 +15,8 @@ class CarModel(models.Model):
 
     class Meta:
         ordering = ['brand', 'model']
+        verbose_name = _('car model')
+        verbose_name_plural = _('car models')
 
 class Car(models.Model):
     car_model = models.ForeignKey(
@@ -55,6 +57,8 @@ class Car(models.Model):
 
     class Meta:
         ordering = ['client', 'car_model']
+        verbose_name = _('car')
+        verbose_name_plural = _('cars')
 
 class Service(models.Model):
     name = models.CharField(_('service name'), max_length=50, null=False, blank=False)
@@ -65,6 +69,8 @@ class Service(models.Model):
 
     class Meta:
         ordering = ['name']
+        verbose_name = _('service')
+        verbose_name_plural = _('services')
 
 class Order(models.Model):
     car = models.ForeignKey(
@@ -105,6 +111,8 @@ class Order(models.Model):
 
     class Meta:
         ordering = ['date_start', 'car']
+        verbose_name = _('order')
+        verbose_name_plural = _('orders')
 
 class OrderLine(models.Model):
     service = models.ForeignKey(
@@ -128,6 +136,10 @@ class OrderLine(models.Model):
 
     def __str__(self) -> str:
         return f'{self.order} {self.service}: {self.total_price} €'
+
+    class Meta:
+        verbose_name = _('order line')
+        verbose_name_plural = _('order lines')
     
 class OrderReview(models.Model):
     order = models.ForeignKey(
@@ -151,3 +163,5 @@ class OrderReview(models.Model):
     
     class Meta:
         ordering = ['-created_at']
+        verbose_name = _('order review')
+        verbose_name_plural = _('order reviews')

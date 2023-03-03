@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% load static %}
+{% load static i18n %}
 {% block title %}{{ block.super }}{% endblock title %}
 {% block style %}
 ul li { display: flex; flex-direction: row; flex-wrap: wrap; justify-content: flex_start; gap: 2rem; }
@@ -15,7 +15,7 @@ ul li h3 { margin: 0; padding-bottom: 6px; }
 #comment::before { content: '>>> '; }
 {% endblock style %}
 {% block content %}
-<h1>car details {% if request.user.is_authenticated %}<a href="{% url 'user_order_create' %}?car_id={{ object.id }}" class="float-right"><img src="{% static 'car_repair_servis/img/neworder_icon.png' %}" class="menu-icon"> create new order</a>{% endif %}</h1>
+<h1>{% trans 'car details' %} {% if request.user.is_authenticated %}<a href="{% url 'user_order_create' %}?car_id={{ object.id }}" class="float-right"><img src="{% static 'car_repair_servis/img/neworder_icon.png' %}" class="menu-icon"> {% trans 'create new order' %}</a>{% endif %}</h1>
 <h2 class="car-name">{{ object.car_model.brand }} {{ object.car_model.model }}</h2>
 <ul>
     <li>
@@ -28,15 +28,15 @@ ul li h3 { margin: 0; padding-bottom: 6px; }
         </div>
         <div>
             {% if object.customer.first_name or object.customer.last_name %}
-            <p>Owner: {{ object.customer.first_name }} {{ object.customer.last_name }}</p>
+            <p>{% trans 'owner'|capfirst %}: {{ object.customer.first_name }} {{ object.customer.last_name }}</p>
             {% else %}
-            <p>Owner: {{ object.customer }}</p>
+            <p>{% trans 'owner'|capfirst %}: {{ object.customer }}</p>
             {% endif %}
-            <p>Plate number: {{ object.plate_number }}</p>
-            <p>Vin number: {{ object.vin_number }}</p>
-            <p>Year of production: {{ object.year }}</p>
-            <p>Engine type: {{ object.get_engine_display }}</p>
-            <p>Color: {{ object.color }}</p>
+            <p>{% trans 'plate number'|capfirst %}: {{ object.plate_number }}</p>
+            <p>{% trans 'vin number'|capfirst %}: {{ object.vin_number }}</p>
+            <p>{% trans 'year of production'|capfirst %}: {{ object.year }}</p>
+            <p>{% trans 'engine type'|capfirst %}: {{ object.get_engine_display }}</p>
+            <p>{% trans 'color'|capfirst %}: {{ object.color }}</p>
         </div>
         <div>
             {{ object.description|safe }}
@@ -47,35 +47,35 @@ ul li h3 { margin: 0; padding-bottom: 6px; }
     {% for order in object.orders.all %}
     <li class="order-details">
         <div class="order-details-width">
-            <h3>Order detail:</h3>
-            <p>Submission date: {{ order.date_start }}</p>
+            <h3>{% trans 'order detail'|capfirst %}:</h3>
+            <p>{% trans 'submission date'|capfirst %}: {{ order.date_start }}</p>
             {% if order.is_overdue == False %}
-            <p>Planned completion date: {{ order.date_finish }}</p>
+            <p>{% trans 'planned completion date'|capfirst %}: {{ order.date_finish }}</p>
             {% else %}
-            <p>Planned completion date: {{ order.date_finish }}</p>
+            <p>{% trans 'planned completion date'|capfirst %}: {{ order.date_finish }}</p>
             {% if order.status != 'd' and order.status != 'p' %}
-            <p class = "overdue">Order is late!</p>
+            <p class = "overdue">{% trans 'order is late'|capfirst %}!</p>
             {% endif %}
             {% endif %}
-            <p>Status: {{ order.get_status_display }}</p>
+            <p>{% trans 'status'|capfirst %}: {{ order.get_status_display }}</p>
             {% if order.status == 'd' %}
-            <p><a href="{% url 'user_order_update' order.pk %}">PAY</a></p>
+            <p><a href="{% url 'user_order_update' order.pk %}">{% trans 'PAY'|upper %}</a></p>
             {% endif %}
             {% if order.order_lines.count > 0 %}
-            <p>Services:</p>
+            <p>{% trans 'services'|capfirst %}:</p>
             {% for service in order.order_lines.all %}
             <p id="padding">{{ service.service }}</p>
             {% endfor %}
             {% endif %}
-            <p class="bold">Total price: {{ order.total_order_sum }}</p>
+            <p class="bold">{% trans 'total price'|capfirst %}: {{ order.total_order_sum }}</p>
         </div>
         <div>
-            <h3>Comment:</h3>
+            <h3>{% trans 'comment'|capfirst %}:</h3>
             <form method="post" action="{{ request.path }}">
                 {% csrf_token %}
                 <p>{{ form.reviewer }} {{ form.content }} {{ form.content.errors }}</p>
                 <input type="hidden" name="order" value="{{ order.id }}">
-                <button type="submit">post review</button>
+                <button type="submit">{%trans 'post review' %}</button>
             </form>
         </div>
         <div>
@@ -88,11 +88,11 @@ ul li h3 { margin: 0; padding-bottom: 6px; }
                 <li>
                     <p id="italic"><a href="{% url 'profile_detail' review.reviewer.username %}">{{ review.reviewer.first_name }} {{ review.reviewer.last_name }}</a> - {{ review.created_at }}</p>
                 </li>
-                <li><a href="{% url 'user_comment_delete' review.id %}">delete comment</a></li>
+                <li><a href="{% url 'user_comment_delete' review.id %}">{% trans 'delete comment' %}</a></li>
                 {% endfor %}
             </ul>
             {% else %}
-            <p>No comment for this order yet.</p>
+            <p>{% trans 'no comment for this order yet'|capfirst %}</p>
             {% endif %}
             </div>
     </li>

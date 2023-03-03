@@ -1,10 +1,11 @@
 {% extends 'base.html' %}
-{% block title %}{{ object.user }} profile at {{ block.super }}{% endblock title %}
+{% load i18n %}
+{% block title %}{{ object.user }} {% trans 'profile at' %} {{ block.super }}{% endblock title %}
 {% block style %}
 ul li { display: flex; flex-direction: row; flex-wrap: wrap; justify-content: flex_start; gap: 2rem; }
 {% endblock style %}
 {% block content %}
-<h1>User details</h1>
+<h1>{% trans 'user details'|capfirst %}</h1>
 <ul>
     <li>
         <div>
@@ -15,9 +16,9 @@ ul li { display: flex; flex-direction: row; flex-wrap: wrap; justify-content: fl
                 <h4>{{ object.user.first_name }} {{ object.user.last_name }}</h4>
             {% endif %}
             {% if object.user == request.user %}
-            <p>Username: {{ object.user }}</p>
-            <p>Email: {{ object.user.email }}</p>
-            <p><a href="{% url 'profile_update' %}">update your profile</a></p>
+            <p>{% trans 'username'|capfirst %}: {{ object.user }}</p>
+            <p>{% trans 'email'|capfirst %}: {{ object.user.email }}</p>
+            <p><a href="{% url 'profile_update' %}">{% trans 'update your profile' %}</a></p>
         </div>
     </li>
 </ul>

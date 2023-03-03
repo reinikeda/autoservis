@@ -5,8 +5,10 @@ from django.shortcuts import render, get_object_or_404
 from django.views import generic
 from django.db.models import Q
 from django.urls import reverse_lazy
+from django.utils.translation import gettext_lazy as _
 from . forms import OrderReviewForm, UserOrderCreateForm, UserOrderUpdateForm
 from . import models
+
 
 def index(request):
     service_count = models.Service.objects.count()
@@ -82,7 +84,7 @@ class CarDetailView(generic.edit.FormMixin, generic.DetailView):
         form.order = self.object
         form.reviewer = self.request.user
         form.save()
-        messages.success(self.request, '-- Review posted successfully --')
+        messages.success(self.request, _('-- review posted successfully --'))
         return super().form_valid(form)
 
 class OrderListView(generic.ListView):
@@ -115,7 +117,7 @@ class OrderDetailView(generic.edit.FormMixin, generic.DetailView):
         form.order = self.object
         form.reviewer = self.request.user
         form.save()
-        messages.success(self.request, '-- Review posted successfully --')
+        messages.success(self.request, _('-- review posted successfully --'))
         return super().form_valid(form)
 
 class UserCarListView(LoginRequiredMixin, generic.ListView):
@@ -150,7 +152,7 @@ class UserOrderCreateView(LoginRequiredMixin, generic.CreateView):
     def form_valid(self, form):
         form.instance.customer = self.request.user
         form.instance.status = 'n'
-        messages.success(self.request, f'{form.instance.car} succesfully created new order')
+        messages.success(self.request, f'{_("succesfully created new order")}: {form.instance.car}')
         return super().form_valid(form)
     
 class UserOrderUpdateView(LoginRequiredMixin, UserPassesTestMixin, generic.UpdateView):
@@ -162,7 +164,7 @@ class UserOrderUpdateView(LoginRequiredMixin, UserPassesTestMixin, generic.Updat
     def form_valid(self, form):
         form.instance.customer = self.request.user
         form.instance.status = 'p'
-        messages.success(self.request, f'Succesfully paid for {form.instance.car} order')
+        messages.success(self.request, f'{_("succesfully paid for order")}: {form.instance.car}')
         return super().form_valid(form)
     
     def test_func(self):
@@ -179,5 +181,5 @@ class UserCommentDeleteView(LoginRequiredMixin, UserPassesTestMixin, generic.Del
         return self.get_object().reviewer == self.request.user
     
     def form_valid(self, form):
-        messages.success(self.request, 'Comment was deleted')
+        messages.success(self.request, _('comment was deleted'))
         return super().form_valid(form)

@@ -9,18 +9,18 @@ td p { margin: 0; }
 .total_price { font-weight: bold; }
 {% endblock style %}
 {% block content %}
-<h1>Order details</h1>
+<h1>{% trans 'order details'|capfirst %}</h1>
 <h2>{{ object.car.car_model }} ({{ object.car.plate_number }})</h2>
 <div>
     <table>
         <tr>
-            <th>Submission date</th>
-            <th>Planned completion date</th>
-            <th>Status</th>
+            <th>{% trans 'submission date'|capfirst %}</th>
+            <th>{% trans 'planned completion date'|capfirst %}</th>
+            <th>{% trans 'status'|capfirst %}</th>
             {% if object.order_lines.count > 0 %}
-            <th>Services</th>
+            <th>{% trans 'services'|capfirst %}</th>
             {% endif %}
-            <th class="total_price">Total price</th>
+            <th class="total_price">{% trans 'total price'|capfirst %}</th>
         </tr>
         <tr>
             <td>{{ object.date_start }}</td>
@@ -28,7 +28,7 @@ td p { margin: 0; }
             <td>{{ object.get_status_display }}</td>
             {% if object.order_lines.count > 0 %}
             <td>{% for service in object.order_lines.all %}
-            <p>{{ service.service }} (quantity: {{ service.quantity }})</p>
+            <p>{{ service.service }}, {% trans 'quantity' %}: {{ service.quantity }}</p>
             {% endfor %}
             </td>
             {% endif %}
@@ -39,11 +39,11 @@ td p { margin: 0; }
 <div>
     <hr>
     <li>
-        <h2>Comment</h2>
+        <h2>{% trans 'comment'|capfirst %}</h2>
         <form method="post" action="{{ request.path }}">
             {% csrf_token %}
             {{ form.as_p }}
-            <button type="submit">post review</button>
+            <button type="submit">{% trans 'post review' %}</button>
         </form>
         {% if object.reviews %}
         <ul>
@@ -55,7 +55,7 @@ td p { margin: 0; }
             {% endfor %}
         </ul>
         {% else %}
-        <h3>No reviews for this car yet.</h3>
+        <h3>{% trans 'no reviews for this car yet'|capfirst %}</h3>
         {% endif %}
     </li>
 </div>

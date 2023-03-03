@@ -1,11 +1,11 @@
 {% extends 'base.html' %}
 {% load i18n %}
-{% block title %}Welcome to {{ block.super }}{% endblock title %}
+{% block title %}{% trans 'Welcome to'|capfirst %} {{ block.super }}{% endblock title %}
 {% block content %}
-<h1>Welcome to our autoservis!</h1>
+<h1>{% trans 'welcome to our autoservis'|capfirst %}!</h1>
 <div class='main-flex'>
     <div class='div-box'>
-        <p>We offer {{ service_count }} services:</p>
+        <p>{% trans 'we offer'|capfirst %} {{ service_count }} {% trans 'services' %}:</p>
         <ul>
             {% for service in service_list %}
             <li>{{ service.name }}</li>
@@ -13,21 +13,21 @@
         </ul>
     </div>
     <div class="div-box">
-        <p>{{ client_count }} clients already trusted us!</p>
+        <p>{{ client_count }} {% trans 'clients already trusted us' %}!</p>
         {% comment %} <p>Most popular car model: {{ model_popular.brand }} {{ model_popular.model }}</p> {% endcomment %}
     </div>
     <div class="div-box">
-        <p>Before buying a new car, always check it in an autoservis!</p>
+        <p>{% trans 'before buying a new car, always check it in an autoservis'|capfirst %}!</p>
         <iframe width="100%" height="100%" src="https://www.youtube.com/embed/qG4IaHgqH00" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
     </div>
     <div class="div-box">
         <ul>
-            <li>Total orders received: {{ order_count }}</li>
-            <li>Orders in progress: {{ order_progress }}</li>
-            <li>Orders finished: {{ order_done }}</li>
+            <li>{% trans 'total orders received'|capfirst %}: {{ order_count }}</li>
+            <li>{% trans 'orders in progress'|capfirst %}: {{ order_progress }}</li>
+            <li>{% trans 'orders finished'|capfirst %}: {{ order_done }}</li>
         </ul>
     </div>
     <div class="div-box">
-        <p>Your visits count: {{ request.session.visit_count }}</p>
+        <p>{% trans 'your visits count'|capfirst %}: {{ request.session.visit_count }}</p>
     </div>
 {% endblock content %}

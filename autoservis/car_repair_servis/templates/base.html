@@ -1,11 +1,13 @@
 <!DOCTYPE html>
-<html lang=en>
-    {% load static %}
+{% load static i18n %}
+{% get_current_language as LANGUAGE_CODE %}
+{% get_available_languages as LANGUAGES %}
+<html lang="{{ LANGUAGE_CODE }}">
     <head>
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>{% block title  %}Flywheel Autoservis{% endblock title %}</title>
+        <title>{% block title  %}FLYWHEEL {% trans 'autoservis'|title %}{% endblock title %}</title>
         <link rel="stylesheet" href="{% static 'admin/css/fonts.css' %}">
         <link rel="stylesheet" href="{% static 'car_repair_servis/css/style.css' %}">
         <style>{% block style %}{% endblock style %}</style>
@@ -13,23 +15,23 @@
     <body>
         <header>
             <div class="base-header">
-                <h1 class="base-h1">FLYWHEEL AUTOSERVIS</h1>
+                <h1 class="base-h1">FLYWHEEL {% trans 'autoservis'|upper %}</h1>
             </div>
             <div class="base-menu">
                 <ul>
-                    <li><a href="{% url 'index' %}"><img src="{% static 'car_repair_servis/img/home_icon.png' %}" class="menu-icon"> HOME</a></li>
-                    <li><a href="{% url 'cars' %}">Car list</a></li>
-                    <li><a href="{% url 'orders' %}">Order list</a></li>
+                    <li><a href="{% url 'index' %}"><img src="{% static 'car_repair_servis/img/home_icon.png' %}" class="menu-icon"> {% trans 'home'|upper %}</a></li>
+                    <li><a href="{% url 'cars' %}">{% trans 'car list'|capfirst %}</a></li>
+                    <li><a href="{% url 'orders' %}">{% trans 'order list'|capfirst %}</a></li>
                     {% if request.user.is_authenticated %}
                     <li class="user_menu"><a href="{% url 'profile_detail_active' %}"><img src="{% static 'car_repair_servis/img/icon.png' %}" class="menu-icon"> {{ request.user }}</a></li>
-                    <li><a href="{% url 'user_cars' %}"><img src="{% static 'car_repair_servis/img/car_icon.png' %}" class="menu-icon"> my cars</a></li>
+                    <li><a href="{% url 'user_cars' %}"><img src="{% static 'car_repair_servis/img/car_icon.png' %}" class="menu-icon"> {% trans 'my cars' %}</a></li>
                     {% if request.user.is_superuser or request.user.is_staff %}
-                    <li><a href="{% url 'admin:index' %}"><img src="{% static 'car_repair_servis/img/admin_icon.png' %}" class="menu-icon"> admin</a></li>
+                    <li><a href="{% url 'admin:index' %}"><img src="{% static 'car_repair_servis/img/admin_icon.png' %}" class="menu-icon"> {% trans 'admin' %}</a></li>
                     {% endif %}
-                    <li><a href="{% url 'logout' %}"><img src="{% static 'car_repair_servis/img/logout_icon.png' %}" class="menu-icon"> log out</a></li>
+                    <li><a href="{% url 'logout' %}"><img src="{% static 'car_repair_servis/img/logout_icon.png' %}" class="menu-icon"> {% trans 'log out' %}</a></li>
                     {% else %}
-                    <li class="user_menu"><a href="{% url 'login' %}{% if request.path != '/accounts/logout/' %}?next={{ request.path }}{% endif %}"><img src="{% static 'car_repair_servis/img/login_icon.png' %}" class="menu_icon"> log in</a></li>
-                    <li><a href="{% url 'register' %}"><img src="{% static 'car_repair_servis/img/signup_icon.png' %}" class="menu-icon"> sign up</a></li>
+                    <li class="user_menu"><a href="{% url 'login' %}{% if request.path != '/accounts/logout/' %}?next={{ request.path }}{% endif %}"><img src="{% static 'car_repair_servis/img/login_icon.png' %}" class="menu_icon"> {% trans 'log in' %}</a></li>
+                    <li><a href="{% url 'register' %}"><img src="{% static 'car_repair_servis/img/signup_icon.png' %}" class="menu-icon"> {% trans 'sign up' %}</a></li>
                     {% endif %}
                 </ul>
             </ddiv>
@@ -46,6 +48,6 @@
             {% block content %}{% endblock content %}
             </div>
         </main>
-        <footer>&copy; 2023 Flywheel Autoservis</footer>
+        <footer>&copy; 2023 Flywheel {% trans 'autoservis'|title %}</footer>
     </body>
 </html>

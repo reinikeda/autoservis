@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% load static %}
+{% load static i18n %}
 {% block title %}{{ block.super }}{% endblock title %}
 {% block style %}
 ul.car_list { display: flex; flex-direction: row; flex-wrap: wrap; justify-content: space-between; gap: 1rem; }
@@ -12,7 +12,7 @@ ul li div { text-align: center; }
 .filter li { display: inline-block; }
 {% endblock style %}
 {% block content %}
-<h1>my car list <a href="{% url 'user_order_create' %}" class="float-right"><img src="{% static 'car_repair_servis/img/neworder_icon.png' %}" class="menu-icon"> create new order</a></h1>
+<h1>{% trans 'my car list' %} <a href="{% url 'user_order_create' %}" class="float-right"><img src="{% static 'car_repair_servis/img/neworder_icon.png' %}" class="menu-icon"> {% trans 'create new order' %}</a></h1>
 {% include 'car_repair_servis/includes/search.html' %}
 {% if car_list.count > 0 %}
 {% include 'car_repair_servis/includes/paginator_next.html' %}
@@ -32,7 +32,7 @@ ul li div { text-align: center; }
 </ul>
 {% include 'car_repair_servis/includes/paginator_number.html' %}
 {% else %}
-    <p>There are no cars in our database...</p>
+    <p>{% trans 'there are no cars in our database'|capfirst %}...</p>
 {% endif %}
 </ul>
 {% endblock content %}

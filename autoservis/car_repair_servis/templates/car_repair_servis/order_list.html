@@ -2,7 +2,7 @@
 {% load i18n %}
 {% block title %}{{ block.super }}{% endblock title %}
 {% block content %}
-<h1>Orders</h1>
+<h1>{% trans 'orders'|capfirst %}</h1>
 {% if order_list.count > 0 %}
 <ul>
     {% for order in order_list %}
@@ -10,6 +10,6 @@
     {% endfor %}
 </ul>
 {% else %}
-    <p>There are no orders in our database</p>
+    <p>{% trans 'there are no orders in our database'|capfirst %}</p>
 {% endif %}
 {% endblock content %}

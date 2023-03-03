@@ -1,16 +1,17 @@
 {% extends 'base.html' %}
-{% block title %}Sign up to {{ block.super }}{% endblock title %}
+{% load i18n %}
+{% block title %}{% trans 'sign up to'|capfirst %} {{ block.super }}{% endblock title %}
 {% block content %}
-<h1>Member Registration</h1>
+<h1>{% trans 'member registration'|capfirst %}</h1>
 <form method="post" action="{{ request.path }}">
     {% csrf_token %}
-    <p><label for="username">Username:</label><input type="text" name="username" value="{{ request.POST.username }}">
-    <small>up to 100 symbols.</small></p>
-    <p><label for="email">Email:</label><input type="email" name="email" value="{{ request.POST.email }}"></p>
-    <p><label for="password1">Password:</label><input type="password" name="password1">
-    <small>minimum 8 symbols and cannot be only numbers, or match any part of username.</small>
+    <p><label for="username">{% trans 'username'|capfirst %}:</label><input type="text" name="username" value="{{ request.POST.username }}">
+    <small>{% trans 'up to 100 symbols' %}.</small></p>
+    <p><label for="email">{% trans 'email'|capfirst %}:</label><input type="email" name="email" value="{{ request.POST.email }}"></p>
+    <p><label for="password1">{% trans 'password'|capfirst %}:</label><input type="password" name="password1">
+    <small>{% trans 'minimum 8 symbols and cannot be only numbers, or match any part of username' %}.</small>
     </p>
-    <p><label for="password2">Confirm Password:</label><input type="password" name="password2"></p>
-    <p><button type="submit">Sign up</button></p>
+    <p><label for="password2">{% trans 'confirm password'|capfirst %}:</label><input type="password" name="password2"></p>
+    <p><button type="submit">{% trans 'sign up'|capfirst %}</button></p>
 </form>
 {% endblock content %}

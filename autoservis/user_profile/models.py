@@ -27,6 +27,10 @@ class Profile(models.Model):
     def __str__(self) -> str:
         return str(self.user)
     
+    class Meta:
+        verbose_name = _('profile')
+        verbose_name_plural = _('profiles')
+
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
         photo = Image.open(self.photo.path)

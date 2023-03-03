@@ -1,14 +1,15 @@
 {% extends 'base.html' %}
-{% block title %}Updating {{ block.super }} profile{% endblock title %}
+{% load i18n %}
+{% block title %}{% trans 'updating'|capfirst %} {{ block.super }} {% trans 'profile' %} {% endblock title %}
 {% block style %}
 .profile_form { padding-inline-start: 0; list-style-type: none; }
 {% endblock style %}
 {% block content %}
-<h1>Update your profile</h1>
+<h1>{% trans 'update your profile'|capfirst %}</h1>
 <form method="post" action="{{ request.path }}" enctype="multipart/form-data">
     {% csrf_token %}
     {{ user_form.as_p }}
     <ul class="profile_form">{{ profile_form.as_ul }}</ul>
-    <button type="submit">Update</button>
+    <button type="submit">{% trans 'update'|capfirst %}</button>
 </form>
 {% endblock content %}
