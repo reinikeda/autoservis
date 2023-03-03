@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang=en>
-    {% load static i18n %}
+    {% load static %}
     <head>
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -12,26 +12,25 @@
     </head>
     <body>
         <header>
-            <div class="base_header">
-                <h1 class="base_h1">FLYWHEEL AUTOSERVIS</h1>
+            <div class="base-header">
+                <h1 class="base-h1">FLYWHEEL AUTOSERVIS</h1>
             </div>
-            <div class="base_menu">
+            <div class="base-menu">
                 <ul>
-                    <li><a href="{% url 'index' %}">Home</a></li>
+                    <li><a href="{% url 'index' %}"><img src="{% static 'car_repair_servis/img/home_icon.png' %}" class="menu-icon"> HOME</a></li>
                     <li><a href="{% url 'cars' %}">Car list</a></li>
                     <li><a href="{% url 'orders' %}">Order list</a></li>
                     {% if request.user.is_authenticated %}
-                    <li class="user-info"><a href="{% url 'profile_detail_active' %}">{{ request.user }}</a></li>
-                        <li><a href="{% url 'user_cars' %}">My cars</a></li>
-                        {% if request.user.is_superuser or request.user.is_staff %}
-                            <li><a href="{% url 'admin:index' %}">Admin</a></li>
-                        {% endif %}
-                        <li><a href="{% url 'logout' %}">Log out</a></li>
-                        {% else %}
-                        <span></span>
-                        <li><a href="{% url 'login' %}{% if request.path != '/accounts/logout/' %}?next={{ request.path }}{% endif %}">Log in</a></li>
-                        <li><a href="{% url 'register' %}">Sign up</a></li>
-                        {% endif %}
+                    <li class="user_menu"><a href="{% url 'profile_detail_active' %}"><img src="{% static 'car_repair_servis/img/icon.png' %}" class="menu-icon"> {{ request.user }}</a></li>
+                    <li><a href="{% url 'user_cars' %}"><img src="{% static 'car_repair_servis/img/car_icon.png' %}" class="menu-icon"> my cars</a></li>
+                    {% if request.user.is_superuser or request.user.is_staff %}
+                    <li><a href="{% url 'admin:index' %}"><img src="{% static 'car_repair_servis/img/admin_icon.png' %}" class="menu-icon"> admin</a></li>
+                    {% endif %}
+                    <li><a href="{% url 'logout' %}"><img src="{% static 'car_repair_servis/img/logout_icon.png' %}" class="menu-icon"> log out</a></li>
+                    {% else %}
+                    <li class="user_menu"><a href="{% url 'login' %}{% if request.path != '/accounts/logout/' %}?next={{ request.path }}{% endif %}"><img src="{% static 'car_repair_servis/img/login_icon.png' %}" class="menu_icon"> log in</a></li>
+                    <li><a href="{% url 'register' %}"><img src="{% static 'car_repair_servis/img/signup_icon.png' %}" class="menu-icon"> sign up</a></li>
+                    {% endif %}
                 </ul>
             </ddiv>
         </header>

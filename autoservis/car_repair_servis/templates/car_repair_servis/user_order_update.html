@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% block title %}Managing order at {{ block.super }}{% endblock title %}
+{% block content %}
+<h1>Change order status</h1>
+<form method="post" action="{{ request.path }}">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Update status</button>
+</form>
+{% endblock content %}

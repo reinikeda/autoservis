@@ -43,10 +43,10 @@ def detail_active(request):
         'object': request.user.profile
     })
 
-# def detail(request, username):
-#     return render(request, 'user_profile/detail.html', {
-#         'object': get_object_or_404(models.Profile, user__username=username)
-#     })
+def detail(request, username):
+    return render(request, 'user_profile/detail.html', {
+        'object': get_object_or_404(models.Profile, user__username=username)
+    })
 
 @login_required
 def update(request):

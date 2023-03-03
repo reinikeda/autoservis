@@ -6,7 +6,7 @@ from PIL import Image
 class Profile(models.Model):
     user = models.OneToOneField(
         get_user_model(), 
-        verbose_name=_("user"), 
+        verbose_name=_('user'), 
         on_delete=models.CASCADE,
         related_name='profile',
         unique=True,
@@ -19,7 +19,7 @@ class Profile(models.Model):
     #     unique=True,
     # )
     photo = models.ImageField(
-        _("photo"), 
+        _('photo'), 
         upload_to='user_profile/photos/',
         default='user_profile/photos/default.png',
     )
@@ -34,4 +34,4 @@ class Profile(models.Model):
             output_size = (400, 400)
             photo.thumbnail(output_size)
             photo.save(self.photo.path)
-            print("photo resized")
+            print('photo resized')

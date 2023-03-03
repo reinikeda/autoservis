@@ -3,8 +3,8 @@
 {% block title %}Welcome to {{ block.super }}{% endblock title %}
 {% block content %}
 <h1>Welcome to our autoservis!</h1>
-<div class='main_flex'>
-    <div class='div_box'>
+<div class='main-flex'>
+    <div class='div-box'>
         <p>We offer {{ service_count }} services:</p>
         <ul>
             {% for service in service_list %}
@@ -12,22 +12,22 @@
             {% endfor %}
         </ul>
     </div>
-    <div class="div_box">
+    <div class="div-box">
         <p>{{ client_count }} clients already trusted us!</p>
         {% comment %} <p>Most popular car model: {{ model_popular.brand }} {{ model_popular.model }}</p> {% endcomment %}
     </div>
-    <div class="div_box">
+    <div class="div-box">
         <p>Before buying a new car, always check it in an autoservis!</p>
         <iframe width="100%" height="100%" src="https://www.youtube.com/embed/qG4IaHgqH00" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
     </div>
-    <div class="div_box">
+    <div class="div-box">
         <ul>
             <li>Total orders received: {{ order_count }}</li>
             <li>Orders in progress: {{ order_progress }}</li>
             <li>Orders finished: {{ order_done }}</li>
         </ul>
     </div>
-    <div class="div_box">
+    <div class="div-box">
         <p>Your visits count: {{ request.session.visit_count }}</p>
     </div>
 {% endblock content %}

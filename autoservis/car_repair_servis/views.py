@@ -1,10 +1,11 @@
-from django.contrib.auth.mixins import LoginRequiredMixin
+from datetime import date, timedelta
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib import messages
 from django.shortcuts import render, get_object_or_404
 from django.views import generic
 from django.db.models import Q
-from django.urls import reverse
-from . forms import OrderReviewForm
+from django.urls import reverse_lazy
+from . forms import OrderReviewForm, UserOrderCreateForm, UserOrderUpdateForm
 from . import models
 
 def index(request):
@@ -55,17 +56,13 @@ class CarListView(generic.ListView):
             context.update({'current_brand': brand})
         return context
 
-# class CarDetailView(generic.DetailView):
-#     model = models.Car
-#     template_name = 'car_repair_servis/car_details.html'
-
 class CarDetailView(generic.edit.FormMixin, generic.DetailView):
     model = models.Car
     template_name = 'car_repair_servis/car_details.html'
     form_class = OrderReviewForm
 
     def get_success_url(self) -> str:
-        return reverse('car', kwargs={'pk': self.get_object().id})
+        return reverse_lazy('car', kwargs={'pk': self.get_object().id})
 
     def post(self, *args, **kwargs):
         self.object = self.get_object()
@@ -88,7 +85,6 @@ class CarDetailView(generic.edit.FormMixin, generic.DetailView):
         messages.success(self.request, '-- Review posted successfully --')
         return super().form_valid(form)
 
-
 class OrderListView(generic.ListView):
     model = models.Order
     template_name = 'car_repair_servis/order_list.html'
@@ -99,7 +95,7 @@ class OrderDetailView(generic.edit.FormMixin, generic.DetailView):
     form_class = OrderReviewForm
 
     def get_success_url(self) -> str:
-        return reverse('order', kwargs={'pk': self.get_object().id})
+        return reverse_lazy('order', kwargs={'pk': self.get_object().id})
 
     def post(self, *args, **kwargs):
         self.object = self.get_object()
@@ -124,6 +120,7 @@ class OrderDetailView(generic.edit.FormMixin, generic.DetailView):
 
 class UserCarListView(LoginRequiredMixin, generic.ListView):
     model = models.Car
+    paginate_by = 10
     template_name = 'car_repair_servis/user_car_list.html'
 
     def get_queryset(self):
@@ -131,3 +128,56 @@ class UserCarListView(LoginRequiredMixin, generic.ListView):
         qs = qs.filter(customer=self.request.user)
         return qs
     
+class UserOrderCreateView(LoginRequiredMixin, generic.CreateView):
+    model = models.Order
+    template_name = 'car_repair_servis/user_order_create.html'
+    form_class = UserOrderCreateForm
+    success_url = reverse_lazy('user_cars')
+
+    def get_form(self, form_class=None):
+        form = super().get_form(form_class)
+        form.fields['car'].queryset = form.fields['car'].queryset.filter(customer=self.request.user)
+        return form
+        
+    def get_initial(self):
+        initial = super().get_initial()
+        initial['status'] = 'n'
+        if self.request.GET.get('car_id'):
+            initial['car'] = get_object_or_404(models.Car, id=self.request.GET.get('car_id'))
+        initial['date_finish'] = date.today() + timedelta(days=7)
+        return initial
+    
+    def form_valid(self, form):
+        form.instance.customer = self.request.user
+        form.instance.status = 'n'
+        messages.success(self.request, f'{form.instance.car} succesfully created new order')
+        return super().form_valid(form)
+    
+class UserOrderUpdateView(LoginRequiredMixin, UserPassesTestMixin, generic.UpdateView):
+    model = models.Order
+    template_name = 'car_repair_servis/user_order_update.html'
+    form_class = UserOrderUpdateForm
+    success_url = reverse_lazy('user_cars')
+
+    def form_valid(self, form):
+        form.instance.customer = self.request.user
+        form.instance.status = 'p'
+        messages.success(self.request, f'Succesfully paid for {form.instance.car} order')
+        return super().form_valid(form)
+    
+    def test_func(self):
+        return self.get_object().car.customer == self.request.user
+
+class UserCommentDeleteView(LoginRequiredMixin, UserPassesTestMixin, generic.DeleteView):
+    model = models.OrderReview
+    template_name = 'car_repair_servis/user_comment_delete.html'
+
+    def get_success_url(self) -> str:
+        return reverse_lazy('car', kwargs={'pk': self.get_object().order.car.id})
+
+    def test_func(self):
+        return self.get_object().reviewer == self.request.user
+    
+    def form_valid(self, form):
+        messages.success(self.request, 'Comment was deleted')
+        return super().form_valid(form)
