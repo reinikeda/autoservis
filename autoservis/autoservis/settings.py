@@ -36,6 +36,7 @@ LOGIN_REDIRECT_URL = reverse_lazy('index')
 INSTALLED_APPS = [
     'car_repair_servis',
     'user_profile',
+    'analytics',
     'tinymce',
     'django.contrib.admin',
     'django.contrib.auth',

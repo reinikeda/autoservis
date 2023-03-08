@@ -22,6 +22,8 @@
                     <li><a href="{% url 'index' %}"><img src="{% static 'car_repair_servis/img/home_icon.png' %}" class="menu-icon"> {% trans 'home'|upper %}</a></li>
                     <li><a href="{% url 'cars' %}">{% trans 'car list'|capfirst %}</a></li>
                     <li><a href="{% url 'orders' %}">{% trans 'order list'|capfirst %}</a></li>
+                    <li><a href="{% url 'quiz' %}">QUIZ</a></li>
+                    <li><a href="{% url 'data' %}">DATA</a></li>
                     {% if request.user.is_authenticated %}
                     <li class="user_menu"><a href="{% url 'profile_detail_active' %}"><img src="{% static 'car_repair_servis/img/icon.png' %}" class="menu-icon"> {{ request.user }}</a></li>
                     <li><a href="{% url 'user_cars' %}"><img src="{% static 'car_repair_servis/img/car_icon.png' %}" class="menu-icon"> {% trans 'my cars' %}</a></li>

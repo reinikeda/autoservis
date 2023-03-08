@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% load static i18n %}
+{% block title %}{{ block.super }}{% endblock title %}
+{% block content %}
+<canvas id="car-model-chart"></canvas>
+{% block scripts %}
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>
+    var data = {{ data|safe }};
+    var ctx = document.getElementById('car-model-chart').getContext('2d');
+    var barColors = ["red", "green","blue","orange","brown"];
+    var chart = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: data.brands,
+        datasets: [{
+          label: 'Car brands in database',
+          data: data.counts,
+          color: '#f4f5f5',
+          {% comment %} backgroundColor: '#84e3e3', {% endcomment %}
+          backgroundColor: barColors,
+          borderColor: '#020d0d',
+          borderWidth: 1
+        }]
+      },
+      options: {
+        scales: {
+          y: {
+            beginAtZero: true,
+            ticks: {
+                color: '#f4f5f5',
+              }
+          },
+          x: {
+            beginAtZero: true,
+            ticks: {
+                color: '#f4f5f5',
+              }
+          }
+        }
+      }
+    });
+  </script>
+{% endblock %}
+
+{% endblock content %}

@@ -25,6 +25,7 @@ urlpatterns = [
 urlpatterns = [
     path('', include('car_repair_servis.urls')),
     path('user_profile/', include('user_profile.urls')),
+    path('analytics/', include('analytics.urls')),
     path('tinymce/', include('tinymce.urls')),
     path('i18n/', include('django.conf.urls.i18n')),
     path('accounts/', include('django.contrib.auth.urls')),

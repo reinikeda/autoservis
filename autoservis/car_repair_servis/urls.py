@@ -11,4 +11,5 @@ urlpatterns = [
     path('my/car/new/', views.UserOrderCreateView.as_view(), name='user_order_create'),
     path('my/car/<int:pk>/update/', views.UserOrderUpdateView.as_view(), name='user_order_update'),
     path('my/order/comment/<int:pk>/delete/', views.UserCommentDeleteView.as_view(), name='user_comment_delete'),
+    path('data/', views.car_model_data, name='data'),
 ]

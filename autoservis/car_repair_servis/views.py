@@ -3,7 +3,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib import messages
 from django.shortcuts import render, get_object_or_404
 from django.views import generic
-from django.db.models import Q
+from django.db.models import Q, Count
 from django.urls import reverse_lazy
 from django.utils.translation import gettext_lazy as _
 from . forms import OrderReviewForm, UserOrderCreateForm, UserOrderUpdateForm
@@ -183,3 +183,12 @@ class UserCommentDeleteView(LoginRequiredMixin, UserPassesTestMixin, generic.Del
     def form_valid(self, form):
         messages.success(self.request, _('comment was deleted'))
         return super().form_valid(form)
+    
+
+def car_model_data(request):
+    car_models = models.CarModel.objects.values('brand').annotate(count=Count('brand'))
+    data = {'brands': [], 'counts': []}
+    for car_model in car_models:
+        data['brands'].append(car_model['brand'])
+        data['counts'].append(car_model['count'])
+    return render(request, 'car_repair_servis/car_model_data.html', {'data': data})
