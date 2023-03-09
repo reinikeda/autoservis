@@ -1,0 +1,30 @@
+version: "3.7"
+services:
+  autoservis:
+    build: .
+    image: autoservis:dev
+    container_name: servis.autoservis
+    restart: always
+    tty: true
+    stdin_open: true
+    ports:
+      - 8000:8000
+    volumes:
+      - ./autoservis:/app
+    command: >
+      bash -c "python manage.py migrate &&
+      python manage.py collectstatic --noinput &&
+      gunicorn -b 0.0.0.0:8000 autoservis.wsgi"
+
+  nginx:
+    build: ./nginx/
+    image: nginx:autoservis
+    container_name: servis.nginx
+    restart: always
+    ports:
+      - 80:80
+    links:
+      - autoservis:autoservis
+    volumes:
+      - ./autoservis/static:/app/static
+      - ./autoservis/media:/app/media
